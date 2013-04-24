@@ -32,7 +32,7 @@ third-party programs.
 %package devel
 Summary:	Libraries and header files for building passwdqc-aware applications
 Group:		Development/Libraries
-Requires:	%name = %version-%release
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 This package contains development libraries and header files needed
@@ -41,6 +41,7 @@ for building passwdqc-aware applications.
 %package -n pam-pam_passwdqc
 Summary:	Password quality-control PAM module
 Group:		Base
+Requires:	%{name} = %{version}-%{release}
 
 %description -n pam-pam_passwdqc
 The pam_passwdqc module is a simple password strength checking module
