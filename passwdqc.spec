@@ -1,12 +1,13 @@
 Summary:	A password/passphrase strength checking and policy enforcement toolset
+Summary(pl.UTF-8):	Narzędzia do sprawdzania i wymuszania polityki jakości haseł
 Name:		passwdqc
 Version:	1.3.0
-Release:	1
+Release:	2
 License:	BSD
 Group:		Base
-URL:		http://www.openwall.com/passwdqc/
 Source0:	http://www.openwall.com/passwdqc/%{name}-%{version}.tar.gz
 # Source0-md5:	3225280caba817c7009dffc157efc1b9
+URL:		http://www.openwall.com/passwdqc/
 BuildRequires:	pam-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -16,12 +17,6 @@ enforcement toolset, including a PAM module (pam_passwdqc),
 command-line programs (pwqcheck and pwqgen), and a library
 (libpasswdqc).
 
-pam_passwdqc is normally invoked on password changes by programs such
-as passwd(1). It is capable of checking password or passphrase
-strength, enforcing a policy, and offering randomly-generated
-passphrases, with all of these features being optional and easily
-(re-)configurable.
-
 pwqcheck and pwqgen are standalone password/passphrase strength
 checking and random passphrase generator programs, respectively, which
 are usable from scripts.
@@ -29,35 +24,58 @@ are usable from scripts.
 libpasswdqc is the underlying library, which may also be used from
 third-party programs.
 
+%description -l pl.UTF-8
+passwdqc to zbiór narzędzi do sprawdzania jakości haseł i wymuszania
+jej polityki. Zawiera moduł PAM (pam_passwdqc), programy uruchamiane z
+linii poleceń (pwqcheck i pwqgen) oraz bibliotekę (libpasswdqc).
+
+pwqcheck oraz pwqgen to samodzielne programy do - odpowiednio -
+sprawdzania jakości hasła oraz generowania losowych haseł, nadające
+się do wykorzystania w skryptach.
+
+libpasswdqc to będąca ich podstawą biblioteka, którą można
+wykorzystywać także w innych programach.
+
 %package devel
-Summary:	Libraries and header files for building passwdqc-aware applications
+Summary:	Header files for building passwdqc-aware applications
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description devel
-This package contains development libraries and header files needed
-for building passwdqc-aware applications.
+This package contains the header files needed for building
+passwdqc-aware applications.
+
+%description devel -l pl.UTF-8
+Ten pakiet zawiera pliki nagłówkowe potrzebne do tworzenia aplikacji
+wykorzystujących passwdqc.
 
 %package -n pam-pam_passwdqc
 Summary:	Password quality-control PAM module
+Summary(pl.UTF-8):	Moduł PAM do sprawdzania jakości haseł
 Group:		Base
 Requires:	%{name} = %{version}-%{release}
 
 %description -n pam-pam_passwdqc
 The pam_passwdqc module is a simple password strength checking module
-for PAM. In addition to checking regular passwords, it offers support
-for passphrases and can provide randomly generated ones.
+for PAM, normally invoked on password changes by programs such as
+passwd(1). In addition to checking regular passwords, it's capable of
+enforcing a policy, and offering ramdomly-generated passphrases, with
+all of these features being optional and easily (re)configurable.
+
+%description -n pam-pam_passwdqc -l pl.UTF-8
+Moduł pam_passwdc to prosty moduł PAM do sprawdzania jakości haseł,
+zwykle wywoływany przy zmianie hasła przez programy takie jak
+passwd(1). Poza sprawdzaniem zwykłych haseł, potrafi wymuszać ich
+politykę i oferuje hasła losowo generowane. Wszystkie te elementy są
+opcjonalne i łatwo (re)konfigurowalne.
 
 %prep
 %setup -q
 
 %build
-sed -i -e 's#^CC =.*#CC = %{__cc}#g' Makefile
-
-%{__make}
-	CC="%{_cc}" \
-	CFLAGS_lib="-Wall -W -fPIC -DLINUX_PAM %{rpmcflags}_lib %{rpmcppflags}" \
-	CFLAGS_bin="-Wall -W %{rpmcflags} %{rpmcppflags}" \
+%{__make} \
+	CC="%{__cc}" \
+	CFLAGS="%{rpmcflags} %{rpmcppflags} -Wall -W -DLINUX_PAM" \
 	LDFLAGS="%{rpmldflags}"
 
 %install
@@ -70,11 +88,11 @@ rm -rf $RPM_BUILD_ROOT
 	DEVEL_LIBDIR=%{_libdir} \
 	SECUREDIR=/%{_lib}/security
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
-
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -89,8 +107,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%{_includedir}/passwdqc.h
 %attr(755,root,root) %{_libdir}/libpasswdqc.so
+%{_includedir}/passwdqc.h
 
 %files -n pam-pam_passwdqc
 %defattr(644,root,root,755)
