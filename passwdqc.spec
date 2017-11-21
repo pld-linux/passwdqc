@@ -1,12 +1,12 @@
 Summary:	A password/passphrase strength checking and policy enforcement toolset
 Summary(pl.UTF-8):	Narzędzia do sprawdzania i wymuszania polityki jakości haseł
 Name:		passwdqc
-Version:	1.3.0
-Release:	2
+Version:	1.3.1
+Release:	1
 License:	BSD
 Group:		Base
 Source0:	http://www.openwall.com/passwdqc/%{name}-%{version}.tar.gz
-# Source0-md5:	3225280caba817c7009dffc157efc1b9
+# Source0-md5:	3878b57bcd3fdbcf3d4b362dbc6228b9
 URL:		http://www.openwall.com/passwdqc/
 BuildRequires:	pam-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
