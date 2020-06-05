@@ -1,13 +1,18 @@
+#
+# Conditional build:
+%bcond_without	audit	# libaudit support in PAM (disable for use with PAM without audit support)
+
 Summary:	A password/passphrase strength checking and policy enforcement toolset
 Summary(pl.UTF-8):	Narzędzia do sprawdzania i wymuszania polityki jakości haseł
 Name:		passwdqc
-Version:	1.3.1
+Version:	1.4.0
 Release:	1
 License:	BSD
 Group:		Base
-Source0:	http://www.openwall.com/passwdqc/%{name}-%{version}.tar.gz
-# Source0-md5:	3878b57bcd3fdbcf3d4b362dbc6228b9
-URL:		http://www.openwall.com/passwdqc/
+Source0:	https://www.openwall.com/passwdqc/%{name}-%{version}.tar.gz
+# Source0-md5:	204de4ff2e95095272bba1b0cbab1579
+URL:		https://www.openwall.com/passwdqc/
+%{?with_audit:BuildRequires:	audit-libs-devel}
 BuildRequires:	pam-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -75,7 +80,7 @@ opcjonalne i łatwo (re)konfigurowalne.
 %build
 %{__make} \
 	CC="%{__cc}" \
-	CFLAGS="%{rpmcflags} %{rpmcppflags} -Wall -W -DLINUX_PAM" \
+	CFLAGS="%{rpmcflags} %{rpmcppflags} -Wall -W -DLINUX_PAM %{?with_audit:-DHAVE_LIBAUDIT}" \
 	LDFLAGS="%{rpmldflags}"
 
 %install
